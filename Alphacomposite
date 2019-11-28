@@ -1,0 +1,135 @@
+package alphacompositeExam;
+
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+public class JalphacompositeExam extends JFrame {
+    public JalphacompositeExam() {
+        initUI();
+    }
+    private void initUI() {
+        Random rand = new Random();
+        setTitle("JalphacompositeExam");
+        add(new suffer1());
+        setSize(rand.nextInt(401)+400, rand.nextInt(401)+400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+    }
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+            	JalphacompositeExam cl = new JalphacompositeExam();
+                cl.setVisible(true);
+            }
+        });
+    }
+}
+
+class suffer1 extends JPanel implements ActionListener{
+	 
+	Timer time;
+	public int delay = 100;
+	
+	public float alfaa = 1;
+	public float deger  = -0.1f;
+	
+	public suffer1() {
+		intime();
+	}
+	
+public void intime() {
+		time = new Timer(delay,this);
+		time.start();
+	}
+	
+	public void doDrawing(Graphics g) {
+		int genislik = getWidth()/2;
+		  int yukseklik = getHeight()/2;
+		
+		Graphics2D gr = (Graphics2D) g.create();
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alfaa);
+		
+		gr.setPaint(Color.blue);
+		gr.setComposite(ac);
+		gr.fillRect(genislik, yukseklik, 60, 60);
+		
+		gr.setColor(Color.green);
+		gr.setComposite(ac);
+		gr.drawLine(genislik,yukseklik, genislik+60, yukseklik);
+		
+		
+		gr.setColor(Color.yellow);
+		gr.setComposite(ac);
+		gr.drawLine(genislik+60, yukseklik, genislik+60, yukseklik+60);
+		
+		
+		gr.setPaint(Color.black);
+		gr.setComposite(ac);
+		gr.drawLine(genislik, yukseklik, genislik, yukseklik+60);
+		
+		
+		gr.setPaint(Color.PINK);
+		gr.setComposite(ac);
+		gr.drawLine(genislik, yukseklik+60,genislik+60 , yukseklik+60);
+	
+		
+		
+		
+		
+		
+	
+		gr.dispose();
+		
+		
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		doDrawing(g);
+	}
+	
+   
+	
+	
+    public void hareket() {
+    	alfaa += deger;
+        if (alfaa+0.1 > 1) {
+        	alfaa = 1;
+            deger = -deger;
+        }
+        if (alfaa-0.1 < 0) {
+        	alfaa = 0;
+            deger = -deger;
+        }
+        
+    	
+    }
+
+    
+
+   
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		hareket();
+		repaint();
+		
+	}
+	
+	
+	
+	
+}
